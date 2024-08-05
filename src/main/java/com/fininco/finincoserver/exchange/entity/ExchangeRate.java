@@ -1,27 +1,27 @@
-/*
- * 
- * 환율 Entity
- * 
- * 환율 식별번호, 환율 기준시간, 환율 국가, 환율 가격
- * 
- */
-
-
-
-
 package com.fininco.finincoserver.exchange.entity;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import com.fininco.finincoserver.exchange.dto.ExchangeRateDto;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/*
+ * 환율 Entity
+ * 
+ * 아이디, 날짜, 통화코드, 송금 받을때, 송금 보낼때, 매매기준율
+ * 
+ */
 
 
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "ExchangeRate")
 public class ExchangeRate {
 	
@@ -29,15 +29,21 @@ public class ExchangeRate {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(name = "dateTime")
-	private LocalDateTime dateTime;
+	@Column(name = "base_date")
+	private LocalDate basedate;
 	
-	@Column(name = "country")
-    private String country;
+	@Column(name = "currency_code")
+    private String currencyCode;
 	
-
-	@Column(name = "price")
-	private long price;
+	@Column(name = "get_currency")
+    private String getCurrency;
+	
+	@Column(name = "sell_currency")
+    private String sellCurrency;
+	
+	@Column(name = "exchange_rate")
+	private BigDecimal exchangeRate;
+	
 	
 
 	public Long getId() {
@@ -45,26 +51,46 @@ public class ExchangeRate {
 	}
 
 
-	public LocalDateTime getDateTime() {
-		return dateTime;
-	}
 
-	public String getCountry() {
-		return country;
+	public LocalDate getBasedate() {
+		return basedate;
 	}
 
 
-	public long getPrice() {
-		return price;
+
+	public String getCurrencyCode() {
+		return currencyCode;
 	}
 
 
-	public ExchangeRate(Long id, LocalDateTime dateTime, String country, long price) {
+
+	public String getGetCurrency() {
+		return getCurrency;
+	}
+
+
+
+	public String getSellCurreny() {
+		return sellCurrency;
+	}
+
+
+
+	public BigDecimal getExchangeRate() {
+		return exchangeRate;
+	}
+
+
+
+	public ExchangeRate(Long id, LocalDate basedate, String currencyCode, String getCurrency, String sellCurrency,
+			BigDecimal exchangeRate) {
 		super();
 		this.id = id;
-		this.dateTime = dateTime;
-		this.country = country;
-		this.price = price;
+		this.basedate = basedate;
+		this.currencyCode = currencyCode;
+		this.getCurrency = getCurrency;
+		this.sellCurrency = sellCurrency;
+		this.exchangeRate = exchangeRate;
 	}
 
 
