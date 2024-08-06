@@ -8,7 +8,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -26,3 +26,6 @@ jwt:
   secret_key: ${ JWT_SECRET_KEY }
   access_token_expiration: 86400000
   refresh_token_expiration: 604800000
+
+api:
+  exchange_authkey: ${EXCHANGE_AUTHKEY}
