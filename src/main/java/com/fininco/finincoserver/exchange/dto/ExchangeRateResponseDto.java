@@ -28,8 +28,6 @@ public class ExchangeRateResponseDto {
 	private String ten_dd_efee_r;
 	private String kftc_deal_bas_r;
 	private String kftc_bkpr;
-	
-	public ExchangeRateResponseDto() {}
 
 	public Integer getResult() {
 		return result;

@@ -26,8 +26,6 @@ public class ExchangeRateDto {
 	private String getCurrency;
 	private String sellCurrency;
 	private BigDecimal exchangeRate;
-	
-	public ExchangeRateDto() {}
 
 	public LocalDate getBaseDate() {
 		return baseDate;
