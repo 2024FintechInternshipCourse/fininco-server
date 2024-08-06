@@ -26,8 +26,8 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("")UserInfo
-    public ResponseEntity<UserProfileResponse> getUserProfile(@Auth  userInfo){
+    @GetMapping("")
+    public ResponseEntity<UserProfileResponse> getUserProfile(@Auth UserInfo userInfo){
         UserProfileResponse response = UserProfileResponse.from(userInfo.user());
 
         return ResponseEntity.ok(response);
