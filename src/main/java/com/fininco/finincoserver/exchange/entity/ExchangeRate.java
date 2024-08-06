@@ -80,18 +80,4 @@ public class ExchangeRate {
 		return exchangeRate;
 	}
 
-
-
-	public ExchangeRate(Long id, LocalDate basedate, String currencyCode, String getCurrency, String sellCurrency,
-			BigDecimal exchangeRate) {
-		super();
-		this.id = id;
-		this.basedate = basedate;
-		this.currencyCode = currencyCode;
-		this.getCurrency = getCurrency;
-		this.sellCurrency = sellCurrency;
-		this.exchangeRate = exchangeRate;
-	}
-
-
 }
