@@ -2,8 +2,8 @@ package com.fininco.finincoserver.global.auth;
 
 import com.fininco.finincoserver.global.exception.AuthenticationException;
 import com.fininco.finincoserver.user.auth.domain.JwtResolver;
-import com.fininco.finincoserver.user.auth.oAuth.service.UserRepository;
 import com.fininco.finincoserver.user.entity.User;
+import com.fininco.finincoserver.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

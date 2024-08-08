@@ -1,4 +1,4 @@
-package com.fininco.finincoserver.user.auth.oAuth.dto;
+package com.fininco.finincoserver.user.dto.response;
 
 public record SignInResponse(
         String id,

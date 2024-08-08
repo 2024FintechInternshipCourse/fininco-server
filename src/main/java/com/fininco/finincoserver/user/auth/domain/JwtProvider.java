@@ -1,10 +1,11 @@
 package com.fininco.finincoserver.user.auth.domain;
 
 import com.fininco.finincoserver.user.auth.config.JwtProperties;
+import com.fininco.finincoserver.user.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
-import com.fininco.finincoserver.user.entity.User;
+
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;

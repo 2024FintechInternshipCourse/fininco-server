@@ -1,7 +1,9 @@
 package com.fininco.finincoserver.user.auth.oAuth.client;
 
+import com.fininco.finincoserver.global.exception.AuthenticationException;
 import com.fininco.finincoserver.user.auth.AuthErrorCode;
 import com.fininco.finincoserver.user.auth.config.KakaoOAuthProperties;
+import com.fininco.finincoserver.user.auth.oAuth.dto.KakaoUserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,8 +13,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-
-import com.fininco.finincoserver.global.exception.AuthenticationException;
 
 @Component
 @RequiredArgsConstructor
