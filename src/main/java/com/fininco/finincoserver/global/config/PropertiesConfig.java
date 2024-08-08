@@ -8,4 +8,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(value = {KakaoOAuthProperties.class, JwtProperties.class})
 public class PropertiesConfig {
+
 }

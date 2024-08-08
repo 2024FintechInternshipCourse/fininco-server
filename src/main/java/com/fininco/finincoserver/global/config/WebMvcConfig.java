@@ -1,5 +1,7 @@
 package com.fininco.finincoserver.global.config;
 
+import com.fininco.finincoserver.global.auth.AuthArgumentResolver;
+import com.fininco.finincoserver.global.auth.JwtAuthenticationInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -7,8 +9,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
-import com.fininco.finincoserver.global.auth.JwtAuthenticationInterceptor;
-import com.fininco.finincoserver.global.auth.AuthArgumentResolver;
 
 @Configuration
 @RequiredArgsConstructor

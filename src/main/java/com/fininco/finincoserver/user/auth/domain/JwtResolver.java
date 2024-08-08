@@ -1,9 +1,9 @@
 package com.fininco.finincoserver.user.auth.domain;
 
 import com.fininco.finincoserver.global.auth.Authentication;
-import com.fininco.finincoserver.user.auth.config.JwtProperties;
 import com.fininco.finincoserver.global.exception.AuthenticationException;
 import com.fininco.finincoserver.user.auth.AuthErrorCode;
+import com.fininco.finincoserver.user.auth.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

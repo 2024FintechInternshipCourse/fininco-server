@@ -1,4 +1,4 @@
-package com.fininco.finincoserver.user.dto;
+package com.fininco.finincoserver.user.dto.response;
 
 import com.fininco.finincoserver.user.entity.User;
 
