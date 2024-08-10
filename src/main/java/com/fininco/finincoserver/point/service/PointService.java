@@ -13,6 +13,10 @@ import com.fininco.finincoserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * 포인트 충전, 내역 조회
@@ -56,6 +60,37 @@ public class PointService {
         PointHistory savedHistory = pointRepository.save(pointHistory);
 
         return PointHistoryResponse.from(savedHistory);
+    }
+
+    /**
+     * 포인트 내역 -> 리스트
+     */
+
+    public List<PointHistoryResponse> getPointHistories(String userId, String period){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("없는 유저 입니다"));
+
+        LocalDateTime fromDate = calculateFromDate(period);
+
+        List<PointHistory> histories = pointRepository.findByUserAndModifiedDateAfterOrderByModifiedDateDesc(user, fromDate);
+
+        return histories.stream()
+                .map(PointHistoryResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 포인트 내역 조회 - 최신순, 1개월, 3개월 6개월
+     */
+
+    private LocalDateTime calculateFromDate(String period) {
+        LocalDateTime now = LocalDateTime.now();
+        return switch (period.toLowerCase()) {
+            case "1month" -> now.minusMonths(1);
+            case "3months" -> now.minusMonths(3);
+            case "6months" -> now.minusMonths(6);
+            default -> now.minusYears(10); // 모든 내역
+        };
     }
 }
 
