@@ -5,7 +5,7 @@ import com.fininco.finincoserver.point.entity.Wallet;
 
 public record WalletResponse(
         CurrencyCode currencyCode,
-        long balance
+        java.math.BigDecimal balance
 ) {
 
     public static WalletResponse from(Wallet wallet) {
