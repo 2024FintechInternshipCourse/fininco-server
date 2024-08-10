@@ -35,8 +35,8 @@ public class ExchangeService {
     public ExchangeReservationResponse reserveBuy(UserInfo userInfo, ExchangeReservationRequest request) {
         User user = userInfo.user();
 
-        Wallet withdrawWallet = walletRepository.findByUserAndAndCurrencyCode(user, CurrencyCode.KRW);
-        Wallet depositWallet = walletRepository.findByUserAndAndCurrencyCode(user, request.currencyCode());
+        Wallet withdrawWallet = walletRepository.findByUserAndCurrencyCode(user, CurrencyCode.KRW);
+        Wallet depositWallet = walletRepository.findByUserAndCurrencyCode(user, request.currencyCode());
         ExchangeReservation exchangeReservation = request.toEntity(withdrawWallet, depositWallet);
 
         ExchangeReservation saved = exchangeReservationRepository.save(exchangeReservation);
