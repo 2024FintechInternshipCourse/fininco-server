@@ -3,9 +3,11 @@ package com.fininco.finincoserver.point.dto.response;
 import com.fininco.finincoserver.point.entity.CurrencyCode;
 import com.fininco.finincoserver.point.entity.Wallet;
 
+import java.math.BigDecimal;
+
 public record WalletResponse(
         CurrencyCode currencyCode,
-        java.math.BigDecimal balance
+        BigDecimal balance
 ) {
 
     public static WalletResponse from(Wallet wallet) {

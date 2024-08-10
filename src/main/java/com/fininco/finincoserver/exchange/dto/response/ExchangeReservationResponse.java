@@ -1,17 +1,21 @@
 package com.fininco.finincoserver.exchange.dto.response;
 
 import com.fininco.finincoserver.exchange.entity.ExchangeReservation;
-import com.fininco.finincoserver.exchange.entity.ExchangeResult;
+import com.fininco.finincoserver.exchange.entity.ExchangeStatus;
 import com.fininco.finincoserver.exchange.entity.ExchangeType;
 import com.fininco.finincoserver.point.entity.CurrencyCode;
+import lombok.Builder;
 
+import java.math.BigDecimal;
+
+@Builder
 public record ExchangeReservationResponse(
         ExchangeType type,
         CurrencyCode currencyCode,
-        long targetRate,
-        long beforeAmount,
-        long afterAmount,
-        ExchangeResult result
+        BigDecimal targetRate,
+        BigDecimal beforeAmount,
+        BigDecimal afterAmount,
+        ExchangeStatus result
 ) {
 
     public static ExchangeReservationResponse from(ExchangeReservation entity) {
@@ -21,7 +25,7 @@ public record ExchangeReservationResponse(
                 entity.getTargetRate(),
                 entity.getBeforeAmount(),
                 entity.getAfterAmount(),
-                entity.getResult()
+                entity.getStatus()
         );
     }
 
