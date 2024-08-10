@@ -12,7 +12,6 @@ public class AuthContext {
 
     private User user;
 
-
     public void registerAuth(User user) {
         this.user = user;
     }
