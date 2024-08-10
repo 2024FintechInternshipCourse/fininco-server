@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
-    Wallet findByUserAndAndCurrencyCode(User user, CurrencyCode currencyCode);
+    Wallet findByUserAndCurrencyCode(User user, CurrencyCode currencyCode);
 
 }
