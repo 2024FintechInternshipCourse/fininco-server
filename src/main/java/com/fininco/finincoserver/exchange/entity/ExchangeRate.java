@@ -7,6 +7,7 @@ import com.fininco.finincoserver.exchange.dto.ExchangeRateDto;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ExchangeRate")
@@ -36,10 +38,10 @@ public class ExchangeRate {
     private String currencyCode;
 	
 	@Column(name = "get_currency")
-    private String getCurrency;
+    private BigDecimal getCurrency;
 	
 	@Column(name = "sell_currency")
-    private String sellCurrency;
+    private BigDecimal sellCurrency;
 	
 	@Column(name = "exchange_rate")
 	private BigDecimal exchangeRate;
@@ -64,13 +66,13 @@ public class ExchangeRate {
 
 
 
-	public String getGetCurrency() {
+	public BigDecimal getGetCurrency() {
 		return getCurrency;
 	}
 
 
 
-	public String getSellCurreny() {
+	public BigDecimal getSellCurreny() {
 		return sellCurrency;
 	}
 

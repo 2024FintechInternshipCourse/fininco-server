@@ -23,48 +23,47 @@ public class ExchangeRateDto {
 	
 	private LocalDate baseDate;
 	private String currencyCode;
-	private String getCurrency;
-	private String sellCurrency;
+	private BigDecimal getCurrency;
+	private BigDecimal sellCurrency;
 	private BigDecimal exchangeRate;
 
 	public LocalDate getBaseDate() {
 		return baseDate;
 	}
 
-	public String getCurrencyCode() {
-		return currencyCode;
-	}
-
-	public String getGetCurrency() {
-		return getCurrency;
-	}
-
-	public String getSellCurrency() {
-		return sellCurrency;
-	}
-
-	public BigDecimal getExchangeRate() {
-		return exchangeRate;
-	}
-
 	public void setBaseDate(LocalDate baseDate) {
 		this.baseDate = baseDate;
+	}
+
+	public String getCurrencyCode() {
+		return currencyCode;
 	}
 
 	public void setCurrencyCode(String currencyCode) {
 		this.currencyCode = currencyCode;
 	}
 
-	public void setGetCurrency(String getCurrency) {
+	public BigDecimal getGetCurrency() {
+		return getCurrency;
+	}
+
+	public void setGetCurrency(BigDecimal getCurrency) {
 		this.getCurrency = getCurrency;
 	}
 
-	public void setSellCurrency(String sellCurrency) {
+	public BigDecimal getSellCurrency() {
+		return sellCurrency;
+	}
+
+	public void setSellCurrency(BigDecimal sellCurrency) {
 		this.sellCurrency = sellCurrency;
+	}
+
+	public BigDecimal getExchangeRate() {
+		return exchangeRate;
 	}
 
 	public void setExchangeRate(BigDecimal exchangeRate) {
 		this.exchangeRate = exchangeRate;
 	}
-	
 }
