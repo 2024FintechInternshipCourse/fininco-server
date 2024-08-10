@@ -1,6 +1,6 @@
 package com.fininco.finincoserver.exchange.entity;
 
-public enum ExchangeResult {
+public enum ExchangeStatus {
 
     COMPLETE,
     PENDING,

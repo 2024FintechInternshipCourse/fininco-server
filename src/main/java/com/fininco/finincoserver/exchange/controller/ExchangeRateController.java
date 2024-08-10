@@ -1,15 +1,13 @@
 package com.fininco.finincoserver.exchange.controller;
 
+import com.fininco.finincoserver.exchange.dto.ExchangeRateResponseDto;
+import com.fininco.finincoserver.exchange.service.ExchangeRateService;
 import com.fininco.finincoserver.global.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fininco.finincoserver.exchange.dto.ExchangeRateResponseDto;
-import com.fininco.finincoserver.exchange.service.ExchangeRateService;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -28,6 +26,7 @@ public class ExchangeRateController {
 
     /**
      * 주어진 날짜의 환율 정보 GET http://localhost:8080/exchange/rates/today
+     *
      * @return 환율 정보를 담은 ResponseEntity 객체
      */
 
@@ -47,6 +46,7 @@ public class ExchangeRateController {
 
     /**
      * 어제 날짜 환율 정보를 GET http://localhost:8080/exchange/rates/yesterday
+     *
      * @return 어제 환율 정보를 담은 ResponseEntity 객체
      */
 

@@ -3,6 +3,7 @@ package com.fininco.finincoserver.exchange.entity;
 
 import com.fininco.finincoserver.global.entity.BaseEntity;
 import com.fininco.finincoserver.point.entity.CurrencyCode;
+import com.fininco.finincoserver.point.entity.Wallet;
 import com.fininco.finincoserver.user.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +17,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Getter
 @Entity
@@ -32,27 +35,45 @@ public class ExchangeReservation extends BaseEntity {
     @Enumerated(EnumType.STRING)
     CurrencyCode currencyCode;
 
-    long targetRate;
+    BigDecimal targetRate;
 
-    long beforeAmount;
+    BigDecimal beforeAmount;
 
-    long afterAmount;
+    BigDecimal afterAmount;
 
     @Enumerated(EnumType.STRING)
-    ExchangeResult result;
+    ExchangeStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    User user;
+    @JoinColumn(name = "withdraw_wallet_id")
+    Wallet withdrawWallet;
+
+    @ManyToOne
+    @JoinColumn(name = "deposit_wallet_id")
+    Wallet depositWallet;
 
     @Builder
-    public ExchangeReservation(ExchangeType type, CurrencyCode currencyCode, long targetRate, long beforeAmount, long afterAmount, ExchangeResult result, User user) {
+    public ExchangeReservation(ExchangeType type, CurrencyCode currencyCode, BigDecimal targetRate, BigDecimal beforeAmount, BigDecimal afterAmount, Wallet withdrawWallet, Wallet depositWallet) {
         this.type = type;
         this.currencyCode = currencyCode;
         this.targetRate = targetRate;
         this.beforeAmount = beforeAmount;
         this.afterAmount = afterAmount;
-        this.result = ExchangeResult.PENDING;
-        this.user = user;
+        this.status = ExchangeStatus.PENDING;
+        this.withdrawWallet = withdrawWallet;
+        this.depositWallet = depositWallet;
     }
+
+
+
+
+    public void complete() {
+        this.status = ExchangeStatus.COMPLETE;
+    }
+
+    public void failed() {
+        this.status = ExchangeStatus.FAILED;
+    }
+
+
 }
