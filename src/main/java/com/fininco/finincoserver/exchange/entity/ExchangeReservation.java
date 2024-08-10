@@ -5,6 +5,8 @@ import com.fininco.finincoserver.global.entity.BaseEntity;
 import com.fininco.finincoserver.point.entity.CurrencyCode;
 import com.fininco.finincoserver.user.entity.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,8 +26,10 @@ public class ExchangeReservation extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Enumerated(EnumType.STRING)
     ExchangeType type;
 
+    @Enumerated(EnumType.STRING)
     CurrencyCode currencyCode;
 
     long targetRate;
@@ -34,6 +38,7 @@ public class ExchangeReservation extends BaseEntity {
 
     long afterAmount;
 
+    @Enumerated(EnumType.STRING)
     ExchangeResult result;
 
     @ManyToOne
@@ -41,7 +46,6 @@ public class ExchangeReservation extends BaseEntity {
     User user;
 
     @Builder
-
     public ExchangeReservation(ExchangeType type, CurrencyCode currencyCode, long targetRate, long beforeAmount, long afterAmount, ExchangeResult result, User user) {
         this.type = type;
         this.currencyCode = currencyCode;
