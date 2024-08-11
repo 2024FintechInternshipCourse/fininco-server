@@ -38,11 +38,6 @@ public class PointHistory implements Serializable {
     // 금액
     private BigDecimal amount;
 
-    // 최근 수정날짜 -> 내역
-    @LastModifiedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss")
-    private LocalDateTime modifiedDate;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

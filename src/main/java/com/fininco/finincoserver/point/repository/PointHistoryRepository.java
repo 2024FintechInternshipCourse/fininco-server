@@ -10,5 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PointHistoryRepository extends JpaRepository<PointHistory, Long> {
-    List<PointHistory> findByUserAndModifiedDateAfterOrderByModifiedDateDesc(User user, LocalDateTime fromDate);
+   // List<PointHistory> findByUserAndModifiedDateAfterOrderByModifiedDateDesc(User user);
+
+    List<PointHistory> findByUser(User user);
 }

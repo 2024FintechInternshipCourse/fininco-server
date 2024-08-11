@@ -11,7 +11,6 @@ public record PointHistoryResponse(
         long id,
         HistoryType historyType,
         BigDecimal amount,
-        LocalDateTime modifiedDate,
         User user
 
 ) {
@@ -21,7 +20,6 @@ public record PointHistoryResponse(
                 pointHistory.getId(),
                 pointHistory.getHistoryType(),
                 pointHistory.getAmount(),
-                pointHistory.getModifiedDate(),
                 pointHistory.getUser()
         );
     }

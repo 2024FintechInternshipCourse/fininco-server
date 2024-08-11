@@ -1,6 +1,7 @@
 package com.fininco.finincoserver.point.service;
 
 
+import com.fininco.finincoserver.global.auth.UserInfo;
 import com.fininco.finincoserver.point.dto.request.PointHistoryCreateRequest;
 import com.fininco.finincoserver.point.dto.response.PointHistoryResponse;
 import com.fininco.finincoserver.point.entity.CurrencyCode;
@@ -36,11 +37,13 @@ public class PointService {
      * 포인트 충전 처리 request.historyType() == CHARGE
      */
 
-    public PointHistoryResponse chargePoint(PointHistoryCreateRequest request) {
+    public PointHistoryResponse chargePoint(UserInfo userInfo, PointHistoryCreateRequest request) {
+//
+//        // User 객체 조회
+//        User user = userRepository.findById(request.userId())
+//                .orElseThrow(() -> new IllegalArgumentException("없는 유저 입니다"));
 
-        // User 객체 조회
-        User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new IllegalArgumentException("없는 유저 입니다"));
+        User user = userInfo.user();
 
         // Wallet 객체 조회
         Wallet wallet = walletRepository.findByUserAndCurrencyCode(user, ALLOWED_CURRENCY);
@@ -66,13 +69,13 @@ public class PointService {
      * 포인트 내역 -> 리스트
      */
 
-    public List<PointHistoryResponse> getPointHistories(String userId, String period){
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("없는 유저 입니다"));
+    public List<PointHistoryResponse> getPointHistories(UserInfo userInfo){
 
-        LocalDateTime fromDate = calculateFromDate(period);
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new IllegalArgumentException("없는 유저 입니다"));
+        User user = userInfo.user();
 
-        List<PointHistory> histories = pointHistoryRepository.findByUserAndModifiedDateAfterOrderByModifiedDateDesc(user, fromDate);
+        List<PointHistory> histories = pointHistoryRepository.findByUser(user);
 
         return histories.stream()
                 .map(PointHistoryResponse::from)
