@@ -69,7 +69,7 @@ public class ExchangeRateService {
 
     }
 
-//    @Scheduled(fixedRate = 30000) // 5분 간격으로 실행 -> 30000
+    @Scheduled(fixedRate = 30000) // 5분 간격으로 실행 -> 30000
     public void fetchAndSaveExchangeRates() { // DB에 저장
         try {
             // 오늘 날짜를 가장 최근의 영업일로 변환
