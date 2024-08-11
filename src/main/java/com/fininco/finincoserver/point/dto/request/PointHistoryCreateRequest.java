@@ -6,15 +6,14 @@ import com.fininco.finincoserver.user.entity.User;
 import lombok.Builder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 
 @Builder
 public record PointHistoryCreateRequest(
         HistoryType historyType,
-        BigDecimal amount,
+        BigDecimal amount
         //User user
-        String userId
+        //String userId
 ) {
     public PointHistory toEntity(User user) {
 

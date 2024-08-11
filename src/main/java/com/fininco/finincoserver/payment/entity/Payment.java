@@ -1,6 +1,7 @@
 package com.fininco.finincoserver.payment.entity;
 
 import com.fininco.finincoserver.global.entity.BaseEntity;
+import com.fininco.finincoserver.point.entity.CurrencyCode;
 import com.fininco.finincoserver.point.entity.Wallet;
 import com.fininco.finincoserver.user.entity.User;
 import jakarta.persistence.*;
@@ -38,12 +39,17 @@ public class Payment extends BaseEntity {
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 
-    public Payment(Long id, BigDecimal price, String store, PaymentType paymentType, User user, Wallet wallet) {
+    @Enumerated(EnumType.STRING)
+    private CurrencyCode currencyCode;
+
+    @Builder
+    public Payment(Long id, BigDecimal price, String store, PaymentType paymentType, User user, Wallet wallet, CurrencyCode currencyCode) {
         this.id = id;
         this.price = price;
         this.store = store;
         this.paymentType = paymentType;
         this.user = user;
         this.wallet = wallet;
+        this.currencyCode = currencyCode;
     }
 }

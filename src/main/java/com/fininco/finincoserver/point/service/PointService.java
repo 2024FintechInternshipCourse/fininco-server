@@ -13,6 +13,7 @@ import com.fininco.finincoserver.user.entity.User;
 import com.fininco.finincoserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,36 +30,31 @@ public class PointService {
 
     private final PointHistoryRepository pointHistoryRepository;
     private final WalletRepository walletRepository;
-    private final UserRepository userRepository;
 
     private static final CurrencyCode ALLOWED_CURRENCY = CurrencyCode.KRW;
 
     /**
      * 포인트 충전 처리 request.historyType() == CHARGE
+     *  -> 환전을 위한 USE 구현 필요
      */
 
+    @Transactional
     public PointHistoryResponse chargePoint(UserInfo userInfo, PointHistoryCreateRequest request) {
-//
-//        // User 객체 조회
-//        User user = userRepository.findById(request.userId())
-//                .orElseThrow(() -> new IllegalArgumentException("없는 유저 입니다"));
 
         User user = userInfo.user();
 
         // Wallet 객체 조회
         Wallet wallet = walletRepository.findByUserAndCurrencyCode(user, ALLOWED_CURRENCY);
 
-        if (wallet == null) {
-            System.out.println("Wallet not found for user: " + user.getId() + " and currency: " + ALLOWED_CURRENCY);
-            throw new IllegalStateException("지갑이 없습니다");
+        // 포인트 충전
+        wallet.chargePoint(request.amount());
 
-        }
-
+        // 업데이트된 잔액을 DB save
         walletRepository.save(wallet);
+
 
         // PointHistory 엔티티 생성
         PointHistory pointHistory = request.toEntity(user);
-
         // 포인트 내역 저장
         PointHistory savedHistory = pointHistoryRepository.save(pointHistory);
 
