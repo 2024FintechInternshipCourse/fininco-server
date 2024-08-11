@@ -4,12 +4,13 @@ import com.fininco.finincoserver.point.entity.HistoryType;
 import com.fininco.finincoserver.point.entity.PointHistory;
 import com.fininco.finincoserver.user.entity.User;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record PointHistoryResponse(
         long id,
         HistoryType historyType,
-        long amount,
+        BigDecimal amount,
         LocalDateTime modifiedDate,
         User user
 

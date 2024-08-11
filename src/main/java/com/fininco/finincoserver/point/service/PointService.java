@@ -6,12 +6,16 @@ import com.fininco.finincoserver.point.dto.response.PointHistoryResponse;
 import com.fininco.finincoserver.point.entity.CurrencyCode;
 import com.fininco.finincoserver.point.entity.PointHistory;
 import com.fininco.finincoserver.point.entity.Wallet;
-import com.fininco.finincoserver.point.repository.PointRepository;
+import com.fininco.finincoserver.point.repository.PointHistoryRepository;
 import com.fininco.finincoserver.point.repository.WalletRepository;
 import com.fininco.finincoserver.user.entity.User;
 import com.fininco.finincoserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -22,7 +26,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PointService {
 
-    private final PointRepository pointRepository;
+    private final PointHistoryRepository pointHistoryRepository;
     private final WalletRepository walletRepository;
     private final UserRepository userRepository;
 
@@ -53,9 +57,40 @@ public class PointService {
         PointHistory pointHistory = request.toEntity(user);
 
         // 포인트 내역 저장
-        PointHistory savedHistory = pointRepository.save(pointHistory);
+        PointHistory savedHistory = pointHistoryRepository.save(pointHistory);
 
         return PointHistoryResponse.from(savedHistory);
+    }
+
+    /**
+     * 포인트 내역 -> 리스트
+     */
+
+    public List<PointHistoryResponse> getPointHistories(String userId, String period){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("없는 유저 입니다"));
+
+        LocalDateTime fromDate = calculateFromDate(period);
+
+        List<PointHistory> histories = pointHistoryRepository.findByUserAndModifiedDateAfterOrderByModifiedDateDesc(user, fromDate);
+
+        return histories.stream()
+                .map(PointHistoryResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 포인트 내역 조회 - 최신순, 1개월, 3개월 6개월
+     */
+
+    private LocalDateTime calculateFromDate(String period) {
+        LocalDateTime now = LocalDateTime.now();
+        return switch (period.toLowerCase()) {
+            case "1month" -> now.minusMonths(1);
+            case "3months" -> now.minusMonths(3);
+            case "6months" -> now.minusMonths(6);
+            default -> now.minusYears(10); // 모든 내역
+        };
     }
 }
 
