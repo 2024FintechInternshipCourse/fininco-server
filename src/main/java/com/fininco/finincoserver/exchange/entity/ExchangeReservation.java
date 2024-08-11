@@ -53,13 +53,13 @@ public class ExchangeReservation extends BaseEntity {
     Wallet depositWallet;
 
     @Builder
-    public ExchangeReservation(ExchangeType type, CurrencyCode currencyCode, BigDecimal targetRate, BigDecimal beforeAmount, BigDecimal afterAmount, Wallet withdrawWallet, Wallet depositWallet) {
+    public ExchangeReservation(ExchangeType type, CurrencyCode currencyCode, BigDecimal targetRate, BigDecimal beforeAmount, BigDecimal afterAmount, Wallet withdrawWallet, Wallet depositWallet, ExchangeStatus status) {
         this.type = type;
         this.currencyCode = currencyCode;
         this.targetRate = targetRate;
         this.beforeAmount = beforeAmount;
         this.afterAmount = afterAmount;
-        this.status = ExchangeStatus.PENDING;
+        this.status = status;
         this.withdrawWallet = withdrawWallet;
         this.depositWallet = depositWallet;
     }
