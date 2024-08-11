@@ -43,10 +43,30 @@ public class ExchangeService {
     @Transactional
     public ExchangeReservationResponse reserveBuy(UserInfo userInfo, ExchangeReservationRequest request) {
         User user = userInfo.user();
+        ExchangeRate currentRate = exchangeRateRepository.findTopByBasedateOrderByIdDesc(LocalDate.now())
+                .orElse(exchangeRateRepository.findTopByOrderById());
 
         Wallet withdrawWallet = walletRepository.findByUserAndCurrencyCode(user, CurrencyCode.KRW);
         Wallet depositWallet = walletRepository.findByUserAndCurrencyCode(user, request.currencyCode());
         ExchangeReservation exchangeReservation = request.toEntity(withdrawWallet, depositWallet);
+
+        if (currentRate.getGetCurrency().equals(request.targetRate())) {
+            exchangeReservation.complete();
+            PointHistory pointHistory = PointHistory.builder()
+                    .amount(exchangeReservation.getBeforeAmount())
+                    .historyType(HistoryType.COST)
+                    .user(user)
+                    .build();
+
+            ExchangeHistory exchangeHistory = ExchangeHistory.builder()
+                    .reservation(exchangeReservation)
+                    .appliedRate(currentRate)
+                    .pointHistory(pointHistory)
+                    .user(user)
+                    .build();
+            pointHistoryRepository.save(pointHistory);
+            exchangeHistoryRepository.save(exchangeHistory);
+        }
 
         ExchangeReservation saved = exchangeReservationRepository.save(exchangeReservation);
 
@@ -56,10 +76,32 @@ public class ExchangeService {
     @Transactional
     public ExchangeReservationResponse reserveSell(UserInfo userInfo, ExchangeReservationRequest request) {
         User user = userInfo.user();
+        ExchangeRate currentRate = exchangeRateRepository.findTopByBasedateOrderByIdDesc(LocalDate.now())
+                .orElse(exchangeRateRepository.findTopByOrderById());
 
         Wallet withdrawWallet = walletRepository.findByUserAndCurrencyCode(user, request.currencyCode());
         Wallet depositWallet = walletRepository.findByUserAndCurrencyCode(user, CurrencyCode.KRW);
         ExchangeReservation exchangeReservation = request.toEntity(withdrawWallet, depositWallet);
+
+        if(currentRate.getSellCurrency().equals(request.targetRate())) {
+            exchangeReservation.complete();
+
+            PointHistory pointHistory = PointHistory.builder()
+                    .amount(exchangeReservation.getAfterAmount())
+                    .historyType(HistoryType.CHARGE)
+                    .user(user)
+                    .build();
+
+            ExchangeHistory exchangeHistory = ExchangeHistory.builder()
+                    .reservation(exchangeReservation)
+                    .appliedRate(currentRate)
+                    .pointHistory(pointHistory)
+                    .user(user)
+                    .build();
+
+            pointHistoryRepository.save(pointHistory);
+            exchangeHistoryRepository.save(exchangeHistory);
+        }
 
         ExchangeReservation saved = exchangeReservationRepository.save(exchangeReservation);
 
