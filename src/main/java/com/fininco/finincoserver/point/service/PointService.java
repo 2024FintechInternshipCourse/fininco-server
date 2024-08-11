@@ -72,7 +72,7 @@ public class PointService {
 
         LocalDateTime fromDate = calculateFromDate(period);
 
-        List<PointHistory> histories = pointRepository.findByUserAndModifiedDateAfterOrderByModifiedDateDesc(user, fromDate);
+        List<PointHistory> histories = pointHistoryRepository.findByUserAndModifiedDateAfterOrderByModifiedDateDesc(user, fromDate);
 
         return histories.stream()
                 .map(PointHistoryResponse::from)
