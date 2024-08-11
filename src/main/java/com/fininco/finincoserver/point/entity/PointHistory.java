@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /*
@@ -35,7 +36,7 @@ public class PointHistory implements Serializable {
     private HistoryType historyType;
 
     // 금액
-    private Long amount;
+    private BigDecimal amount;
 
     // 최근 수정날짜 -> 내역
     @LastModifiedDate
@@ -47,10 +48,10 @@ public class PointHistory implements Serializable {
     private User user;
 
     @Builder
-    public PointHistory(HistoryType historyType, Long amount, LocalDateTime modifiedDate, User user) {
+    public PointHistory(HistoryType historyType, BigDecimal amount, User user) {
         this.historyType = historyType;
         this.amount = amount;
-        this.modifiedDate = modifiedDate;
         this.user = user;
     }
+
 }

@@ -42,3 +42,4 @@ public class PointController {
         return ResponseEntity.ok(response);
     }
 }
+
