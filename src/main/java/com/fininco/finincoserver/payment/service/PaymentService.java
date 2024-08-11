@@ -1,18 +1,21 @@
 package com.fininco.finincoserver.payment.service;
+
 import ch.qos.logback.classic.Logger;
 import com.fininco.finincoserver.global.auth.UserInfo;
 import com.fininco.finincoserver.payment.dto.request.PaymentRequest;
 import com.fininco.finincoserver.payment.dto.response.PaymentResponse;
 import com.fininco.finincoserver.payment.entity.Payment;
+import com.fininco.finincoserver.payment.repository.PaymentRepository;
 import com.fininco.finincoserver.point.entity.Wallet;
 import com.fininco.finincoserver.point.repository.WalletRepository;
-import com.fininco.finincoserver.payment.repository.PaymentRepository;
 import com.fininco.finincoserver.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +33,7 @@ public class PaymentService {
     public PaymentResponse processPayment(UserInfo userInfo, PaymentRequest paymentRequest){
         // 사용자 별로 해당 통화에 대한 지갑은 무조건 존재함
         User user = userInfo.user();
-        Wallet wallet = walletRepository.findByUserAndCurrencyCode(userInfo.user(), paymentRequest.currencyCode());
+        Wallet wallet = walletRepository.findByUserAndCurrencyCode(user, paymentRequest.currencyCode());
         wallet.usePoint(paymentRequest.price());
 
         // 결제 정보
@@ -45,4 +48,17 @@ public class PaymentService {
         return PaymentResponse.from(payment, nowBalance);
     }
 
+    // 특정 지갑에 대한 결제 내역 조회 - 달러, 외화
+    @Transactional(readOnly = true)
+    public List<PaymentResponse> getPaymentsByWallet(UserInfo userInfo, PaymentRequest paymentRequest) {
+        User user = userInfo.user();
+
+        Wallet wallet = walletRepository.findByUserAndCurrencyCode(user, paymentRequest.currencyCode());
+
+        List<Payment> payments = paymentRepository.findByWallet(wallet);
+
+        return payments.stream()
+                .map(payment -> PaymentResponse.from(payment, wallet.getBalance()))
+                .collect(Collectors.toList());
+    }
 }
