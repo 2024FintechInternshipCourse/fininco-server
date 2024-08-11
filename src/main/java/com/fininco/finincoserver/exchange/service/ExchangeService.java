@@ -17,6 +17,7 @@ import com.fininco.finincoserver.point.entity.Wallet;
 import com.fininco.finincoserver.point.repository.PointHistoryRepository;
 import com.fininco.finincoserver.point.repository.WalletRepository;
 import com.fininco.finincoserver.user.entity.User;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,8 +44,15 @@ public class ExchangeService {
     @Transactional
     public ExchangeReservationResponse reserveBuy(UserInfo userInfo, ExchangeReservationRequest request) {
         User user = userInfo.user();
-        ExchangeRate currentRate = exchangeRateRepository.findTopByBasedateOrderByIdDesc(LocalDate.now())
-                .orElse(exchangeRateRepository.findTopByOrderById());
+
+        // 최신 환율 조회하기
+        ExchangeRate currentRate = new ExchangeRate();
+        try {
+            currentRate = exchangeRateRepository.findTopByBasedateAndCurrencyCodeOrderByIdDesc(LocalDate.now(), request.currencyCode().name())
+                    .orElse(exchangeRateRepository.findTopByCurrencyCodeOrderById(request.currencyCode().name()).orElseThrow(EntityNotFoundException::new));
+        } catch (EntityNotFoundException exception) {
+            log.info("최신 환율 정보가 없습니다.");
+        }
 
         Wallet withdrawWallet = walletRepository.findByUserAndCurrencyCode(user, CurrencyCode.KRW);
         Wallet depositWallet = walletRepository.findByUserAndCurrencyCode(user, request.currencyCode());
@@ -76,14 +84,21 @@ public class ExchangeService {
     @Transactional
     public ExchangeReservationResponse reserveSell(UserInfo userInfo, ExchangeReservationRequest request) {
         User user = userInfo.user();
-        ExchangeRate currentRate = exchangeRateRepository.findTopByBasedateOrderByIdDesc(LocalDate.now())
-                .orElse(exchangeRateRepository.findTopByOrderById());
+        
+        // 최신 환율 조회
+        ExchangeRate currentRate = new ExchangeRate();
+        try {
+            currentRate = exchangeRateRepository.findTopByBasedateAndCurrencyCodeOrderByIdDesc(LocalDate.now(), request.currencyCode().name())
+                    .orElse(exchangeRateRepository.findTopByCurrencyCodeOrderById(request.currencyCode().name()).orElseThrow(EntityNotFoundException::new));
+        } catch (EntityNotFoundException exception) {
+            log.info("최신 환율 정보가 없습니다.");
+        }
 
         Wallet withdrawWallet = walletRepository.findByUserAndCurrencyCode(user, request.currencyCode());
         Wallet depositWallet = walletRepository.findByUserAndCurrencyCode(user, CurrencyCode.KRW);
         ExchangeReservation exchangeReservation = request.toEntity(withdrawWallet, depositWallet);
 
-        if(currentRate.getSellCurrency().equals(request.targetRate())) {
+        if (currentRate.getSellCurrency().equals(request.targetRate())) {
             exchangeReservation.complete();
 
             PointHistory pointHistory = PointHistory.builder()
@@ -111,9 +126,13 @@ public class ExchangeService {
     // TODO: 2024-08-11 interface로 코드 개선
     @Transactional
     public ExchangeBatchResponse batchBuyExchange(CurrencyCode currencyCode) {
-        // 최신 환율 조회하기
-        ExchangeRate currentRate = exchangeRateRepository.findTopByBasedateOrderByIdDesc(LocalDate.now())
-                .orElse(exchangeRateRepository.findTopByOrderById());
+        ExchangeRate currentRate = new ExchangeRate();
+        try {
+            currentRate = exchangeRateRepository.findTopByBasedateAndCurrencyCodeOrderByIdDesc(LocalDate.now(), currencyCode.name())
+                    .orElse(exchangeRateRepository.findTopByCurrencyCodeOrderById(currencyCode.name()).orElseThrow(EntityNotFoundException::new));
+        } catch (EntityNotFoundException exception) {
+            log.info("최신 환율 정보가 없습니다.");
+        }
 
         // 최신 환율을 목표 환율로 설정한 환전 예약 건 조회하기
         List<ExchangeReservation> reservations = exchangeReservationRepository.findByStatusAndTargetRateAndType(PENDING, currentRate.getGetCurrency(), BUY);
@@ -157,8 +176,13 @@ public class ExchangeService {
     @Transactional
     public ExchangeBatchResponse batchSellExchange(CurrencyCode currencyCode) {
         // 최신 환율 조회하기
-        ExchangeRate currentRate = exchangeRateRepository.findTopByBasedateOrderByIdDesc(LocalDate.now())
-                .orElse(exchangeRateRepository.findTopByOrderById());
+        ExchangeRate currentRate = new ExchangeRate();
+        try {
+            currentRate = exchangeRateRepository.findTopByBasedateAndCurrencyCodeOrderByIdDesc(LocalDate.now(), currencyCode.name())
+                    .orElse(exchangeRateRepository.findTopByCurrencyCodeOrderById(currencyCode.name()).orElseThrow(EntityNotFoundException::new));
+        } catch (EntityNotFoundException exception) {
+            log.info("최신 환율 정보가 없습니다.");
+        }
 
         // 최신 환율을 목표 환율로 설정한 환전 예약 건 조회하기
         List<ExchangeReservation> reservations = exchangeReservationRepository.findByStatusAndTargetRateAndType(PENDING, currentRate.getGetCurrency(), BUY);
