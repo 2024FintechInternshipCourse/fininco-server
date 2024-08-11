@@ -5,14 +5,14 @@ import com.fininco.finincoserver.point.entity.PointHistory;
 import com.fininco.finincoserver.user.entity.User;
 import lombok.Builder;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
 @Builder
 public record PointHistoryCreateRequest(
         HistoryType historyType,
-        long amount,
-        LocalDateTime modifiedDate,
+        BigDecimal amount,
         //User user
         String userId
 ) {
@@ -21,7 +21,6 @@ public record PointHistoryCreateRequest(
         return PointHistory.builder()
                 .historyType(historyType)
                 .amount(amount)
-                .modifiedDate(modifiedDate)
                 .user(user)
                 .build();
     }
