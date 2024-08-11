@@ -6,7 +6,7 @@ import com.fininco.finincoserver.point.dto.response.PointHistoryResponse;
 import com.fininco.finincoserver.point.entity.CurrencyCode;
 import com.fininco.finincoserver.point.entity.PointHistory;
 import com.fininco.finincoserver.point.entity.Wallet;
-import com.fininco.finincoserver.point.repository.PointRepository;
+import com.fininco.finincoserver.point.repository.PointHistoryRepository;
 import com.fininco.finincoserver.point.repository.WalletRepository;
 import com.fininco.finincoserver.user.entity.User;
 import com.fininco.finincoserver.user.repository.UserRepository;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PointService {
 
-    private final PointRepository pointRepository;
+    private final PointHistoryRepository pointHistoryRepository;
     private final WalletRepository walletRepository;
     private final UserRepository userRepository;
 
@@ -57,7 +57,7 @@ public class PointService {
         PointHistory pointHistory = request.toEntity(user);
 
         // 포인트 내역 저장
-        PointHistory savedHistory = pointRepository.save(pointHistory);
+        PointHistory savedHistory = pointHistoryRepository.save(pointHistory);
 
         return PointHistoryResponse.from(savedHistory);
     }
